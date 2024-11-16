@@ -108,4 +108,6 @@ codetree [-v] [--ignore=folder1,folder2] [-o output_file] <directory_path>
 
 ## License
 
-This project is licensed under the MIT License.
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
