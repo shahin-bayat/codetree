@@ -14,3 +14,12 @@ func countLines(path string) (int, error) {
 	return len(strings.Split(string(bs), "\n")), nil
 
 }
+
+func isIgnored(name string, ignoreList []string) bool {
+	for _, ignore := range ignoreList {
+		if name == ignore {
+			return true
+		}
+	}
+	return false
+}

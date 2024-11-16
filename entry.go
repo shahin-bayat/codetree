@@ -38,14 +38,20 @@ func getNodeInfo(path string, verbose bool) (NodeInfo, error) {
 	return nodeInfo, nil
 }
 
-func printTree(path, prefix string, verbose bool) error {
+func printTree(path, prefix string, verbose bool, ignoreList []string) error {
 	dirs, err := os.ReadDir(path)
 	if err != nil {
 		return err
 	}
 
 	for i, entry := range dirs {
-		if entry.Name()[0] == '.' { // Skip hidden files and directories
+		// Skip hidden files and directories
+		if entry.Name()[0] == '.' {
+			continue
+		}
+
+		// Skip ignored folders
+		if isIgnored(entry.Name(), ignoreList) {
 			continue
 		}
 
@@ -71,7 +77,7 @@ func printTree(path, prefix string, verbose bool) error {
 		}
 
 		if info.IsDir {
-			if err := printTree(fullPath, newPrefix, verbose); err != nil {
+			if err := printTree(fullPath, newPrefix, verbose, ignoreList); err != nil {
 				log.Printf("Error reading directory %s: %v", fullPath, err)
 			}
 		}
