@@ -1,4 +1,3 @@
-```markdown
 # Code Tree Generator
 
 This tool generates a tree structure of a directory, similar to the `tree` command. It provides an option to display additional information about files, such as their size and the number of lines.
@@ -82,4 +81,3 @@ codetree [-v] <directory_path>
 ## License
 
 This project is licensed under the MIT License.
-```
