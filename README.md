@@ -64,8 +64,8 @@ The output will display the directory structure in a tree format. If the `-v` fl
 To install the tool, clone the repository and build the Go project:
 
 ```sh
-git clone <repository_url>
-cd <repository_directory>
+git clone https://github.com/shahin-bayat/codetree
+cd codetree
 go build -o codetree
 ```
 
