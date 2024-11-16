@@ -38,19 +38,17 @@ func getNodeInfo(path string, verbose bool) (NodeInfo, error) {
 	return nodeInfo, nil
 }
 
-func printTree(path, prefix string, verbose bool, ignoreList []string) error {
+func printTree(path, prefix string, verbose bool, ignoreList []string, writer *os.File) error {
 	dirs, err := os.ReadDir(path)
 	if err != nil {
 		return err
 	}
 
 	for i, entry := range dirs {
-		// Skip hidden files and directories
-		if entry.Name()[0] == '.' {
+		if entry.Name()[0] == '.' { // Skip hidden files and directories
 			continue
 		}
 
-		// Skip ignored folders
 		if isIgnored(entry.Name(), ignoreList) {
 			continue
 		}
@@ -58,10 +56,10 @@ func printTree(path, prefix string, verbose bool, ignoreList []string) error {
 		isLast := i == len(dirs)-1
 		var newPrefix string
 		if isLast {
-			fmt.Printf("%s└── %s\n", prefix, entry.Name())
+			fmt.Fprintf(writer, "%s└── %s\n", prefix, entry.Name())
 			newPrefix = prefix + "    "
 		} else {
-			fmt.Printf("%s├── %s\n", prefix, entry.Name())
+			fmt.Fprintf(writer, "%s├── %s\n", prefix, entry.Name())
 			newPrefix = prefix + "│   "
 		}
 
@@ -73,11 +71,11 @@ func printTree(path, prefix string, verbose bool, ignoreList []string) error {
 		}
 
 		if verbose && !info.IsDir {
-			fmt.Printf("%s    Size: %d bytes, Lines: %d\n", newPrefix, info.Size, info.NumLines)
+			fmt.Fprintf(writer, "%s    Size: %d bytes, Lines: %d\n", newPrefix, info.Size, info.NumLines)
 		}
 
 		if info.IsDir {
-			if err := printTree(fullPath, newPrefix, verbose, ignoreList); err != nil {
+			if err := printTree(fullPath, newPrefix, verbose, ignoreList, writer); err != nil {
 				log.Printf("Error reading directory %s: %v", fullPath, err)
 			}
 		}
